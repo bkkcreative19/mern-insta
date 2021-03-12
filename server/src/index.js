@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import cors from "cors";
 
 // route imports
 import userRouter from "./routes/user.js";
@@ -17,6 +18,7 @@ connectDB();
 
 // app middlewares
 
+app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 

@@ -110,22 +110,51 @@ const signup = async (req, res, next) => {
 
   //     });
 };
-// const getProfile = async (req, res, next) => {
-//   // console.log(req.user);
+
+// const getUser = async (req, res, next) => {
 //   const user = await User.findById(req.user);
 //   if (user) {
 //     res.json({
 //       _id: user._id,
 //       name: user.name,
 //       email: user.email,
-//       isAdmin: user.isAdmin,
+//       fullName: user.fullName,
+//       logoImg: user.logoImg,
+//       followers: user.followers,
+//       following: user.following,
 //     });
 //   } else {
 //     res.status(404);
 //     throw new Error("User not found");
 //   }
-//   // // res.send("hi");
-// };
+// }
+
+const getProfile = async (req, res, next) => {
+  // console.log(req.user);
+
+  const user = await User.find({ name: req.params.name });
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  // // res.send("hi");
+};
+const getUser = async (req, res, next) => {
+  // console.log(req.user);
+
+  const user = await User.findById(req.user);
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  // // res.send("hi");
+};
 const signin = async (req, res) => {
   let { email, password } = req.body;
   let errors = [];
@@ -200,4 +229,18 @@ const signin = async (req, res) => {
 //   } catch (err) {}
 // };
 
-export { signup, signin };
+const getSuggestedProfiles = async (req, res, next) => {
+  // const suggested = await User.find(
+  //   { _id: { $ne: req.user } },
+  //   { followers: req.user }
+  // );
+  const suggested = await User.find({
+    $and: [{ _id: { $ne: req.user } }, { followers: { $ne: req.user } }],
+  });
+  // const test = await User.find({
+  //   followers: req.user,
+  // });
+  res.json(suggested);
+};
+
+export { signup, signin, getProfile, getSuggestedProfiles, getUser };

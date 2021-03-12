@@ -26,13 +26,11 @@ const findUserById = async (id) => {
 const getPosts = async (req, res) => {
   try {
     const userId = req.user;
-    const posts = await Post.find({ userId: { $ne: req.user } });
-    const newPosts = [];
-    posts.forEach(async (post) => {
-      const user = await findUserById(post.userId);
-      newPosts.push(user);
-    });
-    console.log(newPosts);
+    const posts = await Post.find({ userId: { $ne: req.user } }).populate(
+      "userId"
+    );
+
+    // console.log(newPosts);
     // console.log(filterPosts);
     res.json(posts);
   } catch (err) {
