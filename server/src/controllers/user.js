@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import createJWT from "../utils/auth.js";
+import { getPostsByUser } from "../controllers/post.js";
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const signup = async (req, res, next) => {
   let {
@@ -132,10 +133,18 @@ const signup = async (req, res, next) => {
 const getProfile = async (req, res, next) => {
   // console.log(req.user);
 
-  const user = await User.find({ name: req.params.name });
+  const user = await User.findOne({ name: req.params.name });
+  const posts = await getPostsByUser(user._id);
+
+  // console.log(user);
+
+  const response = {
+    user,
+    posts,
+  };
 
   if (user) {
-    res.json(user);
+    res.json(response);
   } else {
     res.status(404);
     throw new Error("User not found");

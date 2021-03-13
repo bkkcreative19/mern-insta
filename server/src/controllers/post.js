@@ -40,4 +40,34 @@ const getPosts = async (req, res) => {
   // res.json(posts);
 };
 
-export { createPost, getPosts };
+const getPostsByUser = async (id) => {
+  try {
+    // const userId = req.user;
+    const posts = await Post.find({ userId: id });
+
+    // console.log(newPosts);
+    // console.log(filterPosts);
+    return posts;
+  } catch (err) {
+    return err;
+  }
+};
+
+const likePost = async (req, res) => {
+  const post = await Post.findById(req.params.postId);
+
+  post.likes.includes(req.params.userId)
+    ? post.likes.forEach((item, id) => {
+        if (item.toString() === req.params.userId) {
+          post.likes.splice(id, 1);
+          post.save();
+        }
+        return;
+      })
+    : post.likes.push(req.params.userId);
+  post.save();
+  res.json(post);
+};
+const unlikePost = async (req, res) => {};
+
+export { createPost, getPosts, getPostsByUser, likePost, unlikePost };

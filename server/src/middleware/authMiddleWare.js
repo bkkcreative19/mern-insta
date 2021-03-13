@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
     if (!token)
       return res
         .status(401)
-        .json({ msg: "No authentication token, authorization denied." });
+        .json({ msg: "No authentication token, authorization denied nigga." });
 
     const verified = jwt.verify(token, "adnbfoesrte24fds");
     if (!verified)
