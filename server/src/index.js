@@ -7,6 +7,7 @@ import cors from "cors";
 import userRouter from "./routes/user.js";
 import followRouter from "./routes/follow.js";
 import postRouter from "./routes/post.js";
+import commentRouter from "./routes/comment.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/api", userRouter);
 app.use("/api", followRouter);
 app.use("/api", postRouter);
+app.use("/api", commentRouter);
 
 const port = process.env.PORT || 5000;
 

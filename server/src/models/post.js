@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import deepPopulate from "mongoose-deep-populate";
 const Schema = mongoose.Schema;
 let postSchema = new Schema(
   {
